@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+
+	<h4 class="text-center mt-3">Регистрация</h4>
+
+	<form action="" method="POST">
+		{% csrf_token %}
+		<div class="mb-3 col-3 mx-auto">
+			{{ form.email|as_crispy_field }}
+		</div>
+		<div class="mb-3 col-3 mx-auto">
+			{{ form.password|as_crispy_field }}
+		</div>
+		<div class="mb-3 col-3 mx-auto">
+			{{ form.password2|as_crispy_field }}
+		</div>
+		<button type="submit" class="btn btn-primary d-block mx-auto">Зарегестрироваться</button>
+	</form>
+
+{% endblock %}

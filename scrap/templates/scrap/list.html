@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} List {% endblock %}
+
+{% block content %}
+
+
+	<form action="{% url 'list' %}" method="GET">
+		<div class="mb-3 col-3 mx-auto">
+			{{ form.city|as_crispy_field }}
+		</div>
+		<div class="mb-3 col-3 mx-auto">
+			{{ form.language|as_crispy_field }}
+		</div>
+		<button type="submit" class="btn btn-primary d-block mx-auto">Найти</button>
+	</form>
+
+	{% for object in object_list %}
+		<div class="card my-3">
+			<h5 class="card-header"><a href="{{ object.url }}">{{ object.title }}</a></h5>
+			<div class="card-body">
+				{% autoescape off %}
+					<p class="card-text">{{ object.description }}</p>
+					<p class="card-text">{{ object.company }}</p>
+					<p>{{ object.city.name }} | {{ object.language.name }} |
+						<small>{{ object.timestamp|date:"d-m-Y" }}</small></p>
+				{% endautoescape %}
+			</div>
+		</div>
+	{% empty %}
+		<h3 class="text-center">Ничего не найдено</h3>
+	{% endfor %}
+
+	{% if object_list %}
+		<div class="row">
+			<div class="col">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+
+						{% if object_list.has_previous %}
+							<li class="page-item">
+								<a class="page-link"
+								   href="?city={{ city }}&language={{ language }}&page=1"
+								   aria-label="Previous">
+									<span aria-hidden="true">First</span>
+								</a>
+							</li>
+
+							<li class="page-item">
+								<a class="page-link"
+								   href="?city={{ city }}&language={{ language }}&page={{ object_list.previous_page_number }}"
+								   aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+						{% endif %}
+
+						{% for page in object_list.paginator.page_range %}
+
+							{% if page == object_list.number %}
+								<li class="page-item active">
+									<a class="page-link" href="?city={{ city }}&language={{ language }}&page={{ page }}">
+										{{ page }}
+									</a>
+								</li>
+							{% elif page >= object_list.number|add:-5 and page <= object_list.number|add:5 %}
+								<li class="page-item">
+									<a class="page-link" href="?city={{ city }}&language={{ language }}&page={{ page }}">
+										{{ page }}
+									</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+
+						{% if object_list.has_next %}
+							<li class="page-item">
+								<a class="page-link"
+								   href="?city={{ city }}&language={{ language }}&page={{ object_list.next_page_number }}"
+								   aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+
+							<li class="page-item">
+								<a class="page-link"
+								   href="?city={{ city }}&language={{ language }}&page={{ object_list.paginator.num_pages }}"
+								   aria-label="Next">
+									<span aria-hidden="true">Last</span>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				</nav>
+			</div>
+		</div>
+	{% endif %}
+
+
+{% endblock %}

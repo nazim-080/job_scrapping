@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col text-center">
+            <h2>Сервис по сбору и рассылке вакансий</h2>
+            <h4>Для просмотра вакансий заполниет форму</h4>
+        </div>
+    </div>
+
+    <form action="{% url 'list' %}" method="GET">
+        <div class="mb-3 col-3 mx-auto">
+            {{ form.city|as_crispy_field }}
+        </div>
+        <div class="mb-3 col-3 mx-auto">
+            {{ form.language|as_crispy_field }}
+        </div>
+        <button type="submit" class="btn btn-primary d-block mx-auto">Найти</button>
+    </form>
+
+
+
+
+{% endblock %}

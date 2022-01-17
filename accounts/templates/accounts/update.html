@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+
+{% block title %} Update {% endblock %}
+
+{% block content %}
+
+	<h4 class="text-center mt-3">Настройки</h4>
+
+	<form action="" method="POST">
+		{% csrf_token %}
+		<div class="form-group">
+			<div class="mb-3 col-3 mx-auto">
+				{{ form.city|as_crispy_field }}
+			</div>
+			<div class="mb-3 col-3 mx-auto">
+				{{ form.language|as_crispy_field }}
+			</div>
+			<div class="mb-3 col-3 mx-auto">
+				{{ form.send_email|as_crispy_field }}
+			</div>
+			<button type="submit" class="btn btn-primary d-block mx-auto">Установить</button>
+		</div>
+
+	</form>
+
+	<form action="{% url 'accounts:delete' %}" method="POST">
+		{% csrf_token %}
+		<div class="form-group">
+			<button type="submit" class="btn btn-danger d-block mx-auto mt-3">Удалить профиль</button>
+		</div>
+
+	</form>
+
+{% endblock %}
