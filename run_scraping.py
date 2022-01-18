@@ -51,8 +51,8 @@ for job in jobs:
     except DatabaseError:
         pass
 
-#if errors:
-#    e = Error(data=errors).save()
+if errors:
+    e = Error(data=errors).save()
 
 week_ago = datetime.date.today() - datetime.timedelta(7)
 Vacancy.objects.filter(timestamp__lte=week_ago).delete()
