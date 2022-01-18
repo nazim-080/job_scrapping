@@ -36,7 +36,7 @@ def hh(url, city=None, language=None):
                 errors.append({'url': url, 'error': resp['errors']})
                 break
         except Exception:
-            errors.append({'url': url, 'error': Exception})
+            errors.append({'url': url, 'error': str(Exception)})
     return jobs, errors
 
 
@@ -80,6 +80,6 @@ def avito(url, city=None, language=None):
                 break
             page += 1
         except Exception:
-            errors.append({'url': url, 'error': Exception})
+            errors.append({'url': url, 'error': str(Exception)})
     return jobs, errors
 
