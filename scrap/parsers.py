@@ -3,6 +3,7 @@ from random import randint
 import requests
 import time
 from bs4 import BeautifulSoup as bs
+from random import randint
 
 
 def hh(url, city=None, language=None):
@@ -40,8 +41,14 @@ def hh(url, city=None, language=None):
     return jobs, errors
 
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:53.0) Gecko/20100101 Firefox/53.0',
-           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
+headers = [
+    {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:47.0) Gecko/20100101 Firefox/47.0',
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'},
+    {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36',
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'},
+    {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:53.0) Gecko/20100101 Firefox/53.0',
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
+    ]
 
 
 def avito(url, city=None, language=None):
@@ -53,7 +60,7 @@ def avito(url, city=None, language=None):
     while True:
         time.sleep(3)
         try:
-            resp = requests.get(url=f'{url}&p={page}', headers=headers)
+            resp = requests.get(url=f'{url}&p={page}', headers=headers[randint(0, 2)])
             if resp.status_code == 200:
                 soup = bs(resp.content, 'html.parser')
                 if soup.find('div', attrs={'data-marker': 'catalog-serp'}).div:
