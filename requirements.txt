@@ -2,5 +2,5 @@ Django==3.2.10
 requests==2.27.1
 beautifulsoup4==4.10.0
 python-dotenv==0.19.2
-psycorp2-binary==2.9.3
+psycopg2-binary==2.9.3
 django-crispy-forms==1.13.00

@@ -7,10 +7,13 @@
 {% block content %}
 
 	<h4 class="text-center mt-3">Вход</h4>
+	<h4 class="text-center mt-3">{{ form.errors|as_crispy_errors }}</h4>
 
 	<form action="" method="POST">
 		{% csrf_token %}
+
 		<div class="form-group">
+			<div class="mb-3 col-3 mx-auto">{{ form|as_crispy_errors }}</div>
 			<div class="mb-3 col-3 mx-auto">
 				{{ form.email|as_crispy_field }}
 			</div>

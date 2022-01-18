@@ -58,7 +58,7 @@ def avito(url, city=None, language=None):
                 for div_l in div_list:
                     title = div_l.find('a', attrs={'data-marker': 'item-title'}).h3.text
                     href = div_l.find('a', attrs={'data-marker': 'item-title'})['href']
-                    description = div_l.find('div', attrs={'class': 'iva-item-descriptionStep-QGE8Y'}).div.text
+                    description = div_l.find('div', attrs={'class': 'iva-item-descriptionStep-C0ty1'}).div.text
                     if div_l.find('a', attrs={'data-marker': 'item-link'}):
                         company = div_l.find('a', attrs={'data-marker': 'item-link'}).text
                     jobs.append({

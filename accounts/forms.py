@@ -6,9 +6,15 @@ from scrap.models import City, Language
 
 User = get_user_model()
 
+
 class UserLoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request
+        self.user_cache = None
 
     def clean(self, *args, **kwargs):
         email = self.cleaned_data.get('email').strip()
@@ -16,6 +22,7 @@ class UserLoginForm(forms.Form):
 
         if email and password:
             qs = User.objects.filter(email=email)
+            self.user_cache = authenticate(self.request, email=email, password=password)
             if not qs.exists():
                 raise forms.ValidationError('Такого пользователя нет.')
             if not check_password(password, qs[0].password):
@@ -25,6 +32,9 @@ class UserLoginForm(forms.Form):
                 raise forms.ValidationError('Аккаунт отключен.')
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
+    def get_user(self):
+        return self.user_cache
+
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Введите email')
@@ -33,7 +43,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', )
+        fields = ('email',)
 
     def clean_password2(self):
         data = self.cleaned_data
@@ -41,7 +51,8 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Пароли не совпадают')
         return data['password2']
 
-class UserUpdateForm(forms.Form):
+
+class UserUpdateForm(forms.ModelForm):
     city = forms.ModelChoiceField(queryset=City.objects.all(), label='Город', to_field_name='slug', required=True)
     language = forms.ModelChoiceField(queryset=Language.objects.all(), label='Специальность',
                                       to_field_name='slug', required=True)
@@ -50,17 +61,3 @@ class UserUpdateForm(forms.Form):
     class Meta:
         model = User
         fields = {'city', 'language', 'send_email'}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
